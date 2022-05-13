@@ -4,7 +4,7 @@ import {
   GET_POST_SUCCESS,
 } from "../ActionTypes/ActionTypes";
 
-const postReducer = (state = { postData: [] }, action) => {
+const postReducer = (postData = [], action) => {
   switch (action.type) {
     case GET_POST_LOADING:
       return { loading: true, postData: [] };
@@ -13,9 +13,9 @@ const postReducer = (state = { postData: [] }, action) => {
     case GET_POST_FAIL:
       return { loading: false, error: action.payload };
     case "CREATE":
-      return [...state.postData, action.payload];
+      return [...postData, action.payload];
     default:
-      return state;
+      return postData;
   }
 };
 
