@@ -21,7 +21,7 @@ const createPostAction = (post) => async (dispatch) => {
     const { data } = await api.createPost(post);
 
     dispatch({ type: "CREATE", payload: data });
-    console.log(data);
+    // console.log(data);
   } catch (error) {
     dispatch({ type: "FAIL", payload: error.message });
   }

@@ -7,11 +7,11 @@ import {
 const postReducer = (postData = [], action) => {
   switch (action.type) {
     case GET_POST_LOADING:
-      return { loading: true, postData: [] };
+      return postData;
     case GET_POST_SUCCESS:
-      return { loading: false, postData: action.payload };
+      return action.payload;
     case GET_POST_FAIL:
-      return { loading: false, error: action.payload };
+      return action.payload;
     case "CREATE":
       return [...postData, action.payload];
     default:

@@ -7,28 +7,28 @@ import { useSelector } from "react-redux";
 
 const Posts = () => {
   const classes = useStyles();
-  const { postData } = useSelector((state) => state.postReducer);
-  console.log(postData);
+  const postData = useSelector((state) => state.postReducer);
+  console.log(postData, "posts");
 
   return (
     <>
-      {/* {!postData.length ? (
+      {!postData.length ? (
         <CircularProgress />
-      ) : ( */}
-      <Grid
-        className={classes.container}
-        container
-        alignItems="stretch"
-        spacing={3}
-      >
-        {postData &&
-          postData.map((post) => (
-            <Grid key={post._id} item xs={12} sm={6}>
-              <Post post={post} />
-            </Grid>
-          ))}
-      </Grid>
-      {/* )} */}
+      ) : (
+        <Grid
+          className={classes.container}
+          container
+          alignItems="stretch"
+          spacing={3}
+        >
+          {postData &&
+            postData.map((post) => (
+              <Grid key={post._id} item xs={12} sm={6}>
+                <Post post={post} />
+              </Grid>
+            ))}
+        </Grid>
+      )}
     </>
   );
 };
