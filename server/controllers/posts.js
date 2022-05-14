@@ -16,3 +16,15 @@ export const createPost = async (req, res) => {
     res.status(409).json({ message: error.message });
   }
 };
+
+export const updatePost = async (req, res) => {
+  const id = req.params.id;
+
+  if (!id) return res.status(404).send("this id is not present");
+
+  const updateMessage = await PostMessage.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+
+  res.json(updateMessage);
+};

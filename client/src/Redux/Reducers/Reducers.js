@@ -14,6 +14,10 @@ const postReducer = (postData = [], action) => {
       return action.payload;
     case "CREATE":
       return [...postData, action.payload];
+    case "UPDATE":
+      return postData.map((post) =>
+        post._id === action.payload._id ? action.payload : post
+      );
     default:
       return postData;
   }

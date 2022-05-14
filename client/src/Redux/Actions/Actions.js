@@ -27,4 +27,16 @@ const createPostAction = (post) => async (dispatch) => {
   }
 };
 
-export { getPostsAction, createPostAction };
+const updatePostAction = (id, post) => async (dispatch) => {
+  try {
+    const { data } = await api.updatePost(id, post);
+    // console.log(data, "action");
+
+    dispatch({ type: "UPDATE", payload: data });
+    // console.log(data);
+  } catch (error) {
+    dispatch({ type: "FAIL", payload: error.message });
+  }
+};
+
+export { getPostsAction, createPostAction, updatePostAction };
