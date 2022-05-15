@@ -1,7 +1,11 @@
 import {
+  CREATE,
+  DELETE,
   GET_POST_FAIL,
   GET_POST_LOADING,
   GET_POST_SUCCESS,
+  LIKE,
+  UPDATE,
 } from "../ActionTypes/ActionTypes";
 
 const postReducer = (postData = [], action) => {
@@ -12,12 +16,17 @@ const postReducer = (postData = [], action) => {
       return action.payload;
     case GET_POST_FAIL:
       return action.payload;
-    case "CREATE":
+    case CREATE:
       return [...postData, action.payload];
-    case "UPDATE":
+    case UPDATE:
+    case LIKE:
       return postData.map((post) =>
         post._id === action.payload._id ? action.payload : post
       );
+
+    case DELETE:
+      return postData.filter((post) => post._id !== action.payload);
+
     default:
       return postData;
   }

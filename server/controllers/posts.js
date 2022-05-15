@@ -28,3 +28,30 @@ export const updatePost = async (req, res) => {
 
   res.json(updateMessage);
 };
+
+export const deletePost = async (req, res) => {
+  const id = req.params.id;
+
+  if (!id) return res.status(404).send("this id is not present");
+
+  await PostMessage.findByIdAndDelete(id);
+
+  res.json({ message: "Post deleted successfully" });
+};
+
+export const likePost = async (req, res) => {
+  const id = req.params.id;
+
+  if (!id) return res.status(404).send("this id is not present");
+
+  const post = await PostMessage.findById(id);
+  const updatePost = await PostMessage.findByIdAndUpdate(
+    id,
+    {
+      likeCount: post.likeCount + 1,
+    },
+    { new: true }
+  );
+
+  res.json(updatePost);
+};

@@ -94,7 +94,9 @@ const Form = ({ currentId, setCurrentId }) => {
           label="Tags"
           fullWidth
           value={postLists.tags}
-          onChange={(e) => setPostLists({ ...postLists, tags: e.target.value })}
+          onChange={(e) =>
+            setPostLists({ ...postLists, tags: e.target.value.split(",") })
+          }
         />
         <div className={classes.fileInput}>
           <FileBase
