@@ -28,3 +28,4 @@ mongoose
   .catch((error) => console.log(error.message));
 
 // mongoose.set("useFindAndModify", false);
+// DB_URL=mongodb://localhost:27017/memory
