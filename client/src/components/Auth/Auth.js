@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Button,
@@ -6,8 +6,10 @@ import {
   Grid,
   Typography,
   Container,
-  TextField,
 } from "@material-ui/core";
+import { GoogleLogin } from "react-google-login";
+import Icon from "./Icon";
+import { gapi } from "gapi-script";
 
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import useStyles from "./styles";
@@ -16,14 +18,37 @@ import Input from "./Input";
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSignup, setIsSignup] = useState(false);
+
+  useEffect(() => {
+    function start() {
+      gapi.auth2.init({
+        client_id:
+          "841844588697-sfa3g0f4bki12b9jb5tf45t80rv51dru.apps.googleusercontent.com",
+      });
+    }
+    gapi.load("client:auth2", start);
+  });
+
   const classes = useStyles();
-  const isSignup = false;
 
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
 
   const handleSubmit = () => {};
   const handleChange = () => {};
+  const switchMode = () => {
+    setIsSignup(!isSignup);
+    setShowPassword(false);
+  };
+
+  const GoogleSuccess = async (res) => {
+    console.log(res);
+  };
+  const GoogleFailure = (error) => {
+    console.log(error);
+    console.log("google sign in Was unsuccessfull, Try again later");
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -82,6 +107,37 @@ const Auth = () => {
           >
             {isSignup ? "Sign Up" : "Sign In"}
           </Button>
+
+          <GoogleLogin
+            clientId="841844588697-sfa3g0f4bki12b9jb5tf45t80rv51dru.apps.googleusercontent.com"
+            render={(renderProps) => (
+              <Button
+                className={classes.googleButton}
+                color="primary"
+                fullWidth
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+                startIcon={<Icon />}
+                variant="contained"
+              >
+                Google Sign In
+              </Button>
+            )}
+            onSuccess={GoogleSuccess}
+            onFailure={GoogleFailure}
+            cookiePolicy="single_host_origin"
+            ux_mode={"popup"}
+          />
+
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Button onClick={switchMode}>
+                {isSignup
+                  ? "Already have an account? Sign IN"
+                  : "Don't have an account? Sign up"}
+              </Button>
+            </Grid>
+          </Grid>
         </form>
       </Paper>
     </Container>

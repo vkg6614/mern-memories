@@ -10,7 +10,7 @@ const Posts = ({ setCurrentId }) => {
 
   const postData = useSelector((state) => state.postReducer);
 
-  // console.log(postData, "posts");
+  console.log(postData, "posts");
 
   return !postData.length ? (
     <CircularProgress />
