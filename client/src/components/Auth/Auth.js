@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -10,16 +11,17 @@ import {
 import { GoogleLogin } from "react-google-login";
 import Icon from "./Icon";
 import { gapi } from "gapi-script";
-
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import useStyles from "./styles";
 
 import Input from "./Input";
+import { useDispatch } from "react-redux";
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
-
+  const dispatch = useDispatch();
+  const history = useHistory();
   useEffect(() => {
     function start() {
       gapi.auth2.init({
@@ -43,7 +45,14 @@ const Auth = () => {
   };
 
   const GoogleSuccess = async (res) => {
-    console.log(res);
+    const result = res?.profileObj;
+    const token = res?.tokenId;
+    try {
+      dispatch({ type: "AUTH", data: { result, token } });
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
   const GoogleFailure = (error) => {
     console.log(error);
