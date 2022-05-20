@@ -5,6 +5,7 @@ import { AppBar, Avatar, Button, Toolbar, Typography } from "@material-ui/core";
 import useStyles from "./styles";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import decode from "jwt-decode";
 
 const Navbar = () => {
   const classes = useStyles();
@@ -14,8 +15,15 @@ const Navbar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   useEffect(() => {
     // const token = user?.token;
+
+    if (user?.token) {
+      const decodedToken = decode(user?.token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) logoutHandleClick();
+    }
+
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location]);
+
   const logoutHandleClick = () => {
     dispatch({ type: "LOGOUT" });
     history.push("/");

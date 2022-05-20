@@ -14,7 +14,6 @@ const Form = ({ currentId, setCurrentId }) => {
     currentId ? state.postReducer.find((p) => p._id === currentId) : null
   );
   const [postLists, setPostLists] = useState({
-    creator: "",
     title: "",
     message: "",
     tags: "",
@@ -25,27 +24,40 @@ const Form = ({ currentId, setCurrentId }) => {
     if (postData) setPostLists(postData);
   }, [postData]);
 
+  const user = JSON.parse(localStorage.getItem("profile"));
+
   const classes = useStyles();
 
   const handleFromSubmit = (e) => {
     e.preventDefault();
     if (currentId) {
-      dispatch(updatePostAction(currentId, postLists));
+      dispatch(
+        updatePostAction(currentId, { ...postLists, name: user?.result?.name })
+      );
     } else {
-      dispatch(createPostAction(postLists));
+      dispatch(createPostAction({ ...postLists, name: user?.result?.name }));
     }
     clear();
   };
   const clear = () => {
     setCurrentId(null);
     setPostLists({
-      creator: "",
       title: "",
       message: "",
       tags: "",
       selectedFile: "",
     });
   };
+
+  if (!user?.result?.name) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please Sign in to create your own memories and like other's memories
+        </Typography>
+      </Paper>
+    );
+  }
 
   return (
     <Paper className={classes.paper}>
@@ -58,16 +70,7 @@ const Form = ({ currentId, setCurrentId }) => {
         <Typography variant="h6">
           {currentId ? "Editing" : "Creating"} a memory
         </Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          fullWidth
-          value={postLists.creator}
-          onChange={(e) =>
-            setPostLists({ ...postLists, creator: e.target.value })
-          }
-        />
+
         <TextField
           name="title"
           variant="outlined"
