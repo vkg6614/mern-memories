@@ -1,9 +1,9 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-import User from "../models/user.js";
+const { User } = require("../models/user.js");
 
-export const signin = async (req, res) => {
+const signin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -33,7 +33,7 @@ export const signin = async (req, res) => {
   }
 };
 
-export const signup = async (req, res) => {
+const signup = async (req, res) => {
   const { email, password, firstName, lastName, confirmPassword } = req.body;
   try {
     const existingUser = await User.findOne({ email });
@@ -55,4 +55,9 @@ export const signup = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error });
   }
+};
+
+module.exports = {
+  signin,
+  signup,
 };
