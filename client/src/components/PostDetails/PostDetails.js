@@ -17,7 +17,6 @@ import CommentSection from "./CommentSection";
 
 const PostDetails = () => {
   const { posts, post, isLoading } = useSelector((state) => state.postReducer);
-  console.log(post, isLoading);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -26,7 +25,7 @@ const PostDetails = () => {
 
   useEffect(() => {
     dispatch(getPostAction(id));
-  }, [id]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     if (post) {
@@ -34,7 +33,7 @@ const PostDetails = () => {
         getPostsBySearchAction({ search: "none", tags: post?.tags.join(",") })
       );
     }
-  }, [post]);
+  }, [post, dispatch]);
 
   if (!post) return null;
   if (isLoading) {
@@ -119,7 +118,7 @@ const PostDetails = () => {
                   <Typography gutterBottom variant="subtitle1">
                     Likes: {likes.length}
                   </Typography>
-                  <img src={selectedFile} width="200px" />
+                  <img src={selectedFile} width="200px" alt="img" />
                 </div>
               )
             )}

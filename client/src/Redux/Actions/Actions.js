@@ -27,7 +27,6 @@ const getPostAction = (id) => async (dispatch) => {
   try {
     dispatch({ type: GET_POST_LOADING });
     const { data } = await api.fetchPost(id);
-
     dispatch({ type: GET_SINGLE_POST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: GET_POST_FAIL, payload: error.message });
@@ -91,7 +90,7 @@ const commentPostAction = (value, id) => async (dispatch) => {
     const { data } = await api.commentPost(value, id);
     console.log(data, "action");
     dispatch({ type: COMMENT, payload: data });
-    // return data.comments;
+    return data.comments;
   } catch (error) {
     console.log(error, "er");
   }

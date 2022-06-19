@@ -45,8 +45,6 @@ const postReducer = (state = { posts: [] }, action) => {
         ...state,
         posts: state.posts.map((post) => {
           if (post._id === action.payload._id) return action.payload;
-
-          console.log(state, "red");
           return post;
         }),
       };

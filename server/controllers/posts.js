@@ -113,7 +113,7 @@ const commentPost = async (req, res) => {
 
   const post = await PostMessage.findById(id);
   post.comments.push(value);
-  const updatedPost = await postMessage.findByIdAndUpdate(id, post, {
+  const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
     new: true,
   });
 

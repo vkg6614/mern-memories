@@ -1,5 +1,5 @@
 import { Button, TextField, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { commentPostAction } from "../../Redux/Actions/Actions";
 
@@ -7,16 +7,25 @@ import useStyles from "./styles";
 
 const CommentSection = ({ post }) => {
   const [comments, setComments] = useState(post?.comments);
-  console.log(comments, "com");
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
+  const commentRef = useRef();
   const classes = useStyles();
+
   const user = JSON.parse(localStorage.getItem("profile"));
 
-  const handleCommentButton = () => {
+  const handleCommentButton = async () => {
     const finalComment = `${user.result.name}:${comment}`;
-    dispatch(commentPostAction(finalComment, post._id));
+    const newComments = await dispatch(
+      commentPostAction(finalComment, post._id)
+    );
+    // setComments(newComments);
+    console.log(newComments, "new");
+    // setComment("");
+
+    commentRef.current.scrollIntoView({ behavior: "smooth" });
   };
+  console.log(comments, "com");
 
   return (
     <div>
@@ -27,9 +36,11 @@ const CommentSection = ({ post }) => {
           </Typography>
           {comments.map((c, i) => (
             <Typography key={i} gutterBottom variant="subtitle1">
-              {c}
+              <strong>{c.split(":")[0]}</strong>
+              {c.split(":")[1]}
             </Typography>
           ))}
+          <div ref={commentRef} />
         </div>
         {user?.result?.name && (
           <div style={{ width: "70%" }}>
@@ -38,7 +49,7 @@ const CommentSection = ({ post }) => {
             </Typography>
             <TextField
               fullWidth
-              rows={4}
+              minRows={4}
               variant="outlined"
               label="Comment"
               multiline

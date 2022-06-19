@@ -6,7 +6,6 @@ import {
   CardMedia,
   Button,
   Typography,
-  ButtonBase,
 } from "@material-ui/core";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -66,10 +65,7 @@ const Post = ({ post, setCurrentId }) => {
 
   return (
     <Card className={classes.card} raised elevation={6}>
-      <ButtonBase
-        className={classes.cardAction}
-        onClick={handleSingleCartClick}
-      >
+      <div className={classes.cardAction} onClick={handleSingleCartClick}>
         <CardMedia
           className={classes.media}
           image={post.selectedFile}
@@ -116,7 +112,7 @@ const Post = ({ post, setCurrentId }) => {
             {post.message}
           </Typography>
         </CardContent>
-      </ButtonBase>
+      </div>
 
       <CardActions className={classes.cardActions}>
         <Button

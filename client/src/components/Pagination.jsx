@@ -16,7 +16,7 @@ const Paginate = ({ page }) => {
     if (page) {
       dispatch(getPostsAction(page));
     }
-  }, [page]);
+  }, [page, dispatch]);
 
   return (
     <Pagination
