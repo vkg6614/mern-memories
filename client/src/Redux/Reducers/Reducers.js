@@ -5,6 +5,7 @@ import {
   GET_POST_FAIL,
   GET_POST_LOADING,
   GET_POST_SUCCESS,
+  GET_SINGLE_POST_SUCCESS,
   LIKE,
   UPDATE,
 } from "../ActionTypes/ActionTypes";
@@ -23,6 +24,10 @@ const postReducer = (state = { posts: [] }, action) => {
       };
     case GET_POST_FAIL:
       return { ...state, isLoading: false };
+
+    case GET_SINGLE_POST_SUCCESS:
+      return { ...state, post: action.payload, isLoading: false };
+
     case FETCH_BY_SEARCH:
       return { ...state, posts: action.payload, isLoading: false };
 

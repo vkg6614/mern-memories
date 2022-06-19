@@ -6,6 +6,7 @@ import {
   GET_POST_FAIL,
   GET_POST_LOADING,
   GET_POST_SUCCESS,
+  GET_SINGLE_POST_SUCCESS,
   LIKE,
   UPDATE,
 } from "../ActionTypes/ActionTypes";
@@ -16,6 +17,17 @@ const getPostsAction = (page) => async (dispatch) => {
     const { data } = await api.fetchPosts(page);
 
     dispatch({ type: GET_POST_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: GET_POST_FAIL, payload: error.message });
+  }
+};
+
+const getPostAction = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_POST_LOADING });
+    const { data } = await api.fetchPost(id);
+
+    dispatch({ type: GET_SINGLE_POST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: GET_POST_FAIL, payload: error.message });
   }
@@ -80,4 +92,5 @@ export {
   deletePostAction,
   likePostAction,
   getPostsBySearchAction,
+  getPostAction,
 };
