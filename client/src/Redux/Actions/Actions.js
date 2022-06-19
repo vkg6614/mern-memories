@@ -1,5 +1,6 @@
 import * as api from "../../api/";
 import {
+  COMMENT,
   CREATE,
   DELETE,
   FETCH_BY_SEARCH,
@@ -85,6 +86,17 @@ const likePostAction = (id) => async (dispatch) => {
   }
 };
 
+const commentPostAction = (value, id) => async (dispatch) => {
+  try {
+    const { data } = await api.commentPost(value, id);
+    console.log(data, "action");
+    dispatch({ type: COMMENT, payload: data });
+    // return data.comments;
+  } catch (error) {
+    console.log(error, "er");
+  }
+};
+
 export {
   getPostsAction,
   createPostAction,
@@ -93,4 +105,5 @@ export {
   likePostAction,
   getPostsBySearchAction,
   getPostAction,
+  commentPostAction,
 };

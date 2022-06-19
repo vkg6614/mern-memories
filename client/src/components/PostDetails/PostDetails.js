@@ -13,6 +13,7 @@ import {
   getPostAction,
   getPostsBySearchAction,
 } from "../../Redux/Actions/Actions";
+import CommentSection from "./CommentSection";
 
 const PostDetails = () => {
   const { posts, post, isLoading } = useSelector((state) => state.postReducer);
@@ -76,14 +77,13 @@ const PostDetails = () => {
             <strong>Realtime Chat - coming soon!</strong>
           </Typography>
           <Divider style={{ margin: "20px 0" }} />
-          <Typography variant="body1">
-            <strong>Comments - coming soon!</strong>
-          </Typography>
+          <CommentSection post={post} />
           <Divider style={{ margin: "20px 0" }} />
         </div>
         <div className={classes.imageSection}>
           <img
             className={classes.media}
+            height="300px"
             src={
               post.selectedFile ||
               "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"

@@ -1,4 +1,5 @@
 import {
+  COMMENT,
   CREATE,
   DELETE,
   FETCH_BY_SEARCH,
@@ -37,6 +38,17 @@ const postReducer = (state = { posts: [] }, action) => {
         posts: state.posts.map((post) =>
           post._id === action.payload._id ? action.payload : post
         ),
+      };
+
+    case COMMENT:
+      return {
+        ...state,
+        posts: state.posts.map((post) => {
+          if (post._id === action.payload._id) return action.payload;
+
+          console.log(state, "red");
+          return post;
+        }),
       };
 
     case CREATE:

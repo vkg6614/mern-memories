@@ -8,6 +8,7 @@ const {
   deletePost,
   likePost,
   getPostsBySearch,
+  commentPost,
 } = require("../controllers/posts.js");
 
 const { auth } = require("../middleware/auth.js");
@@ -22,5 +23,6 @@ router.post("/", auth, createPost);
 router.patch("/:id", auth, updatePost);
 router.delete("/:id", auth, deletePost);
 router.patch("/:id/likePost", auth, likePost);
+router.post("/:id/commentPost", auth, commentPost);
 
 module.exports = router;

@@ -28,6 +28,9 @@ export const updatePost = (id, updatedPost) =>
 export const deletePost = (id) => API.delete(`/posts/${id}`);
 
 export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
+export const commentPost = (value, id) => {
+  API.post(`/posts/${id}/commentPost`, { value });
+};
 
 // router.post("/signin", signin);
 // app.use("/user", userRoutes);

@@ -107,11 +107,25 @@ const likePost = async (req, res) => {
   res.json(updatePost);
 };
 
+const commentPost = async (req, res) => {
+  const { id } = req.params;
+  const { value } = req.body;
+
+  const post = await PostMessage.findById(id);
+  post.comments.push(value);
+  const updatedPost = await postMessage.findByIdAndUpdate(id, post, {
+    new: true,
+  });
+
+  res.json(updatedPost);
+};
+
 module.exports = {
   createPost,
   updatePost,
   deletePost,
   likePost,
+  commentPost,
   getPosts,
   getPostsBySearch,
   getPost,
