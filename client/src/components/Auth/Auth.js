@@ -30,6 +30,8 @@ const Auth = () => {
   });
   const dispatch = useDispatch();
   const history = useHistory();
+  const classes = useStyles();
+
   useEffect(() => {
     function start() {
       gapi.auth2.init({
@@ -39,8 +41,6 @@ const Auth = () => {
     }
     gapi.load("client:auth2", start);
   });
-
-  const classes = useStyles();
 
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -57,7 +57,14 @@ const Auth = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const switchMode = () => {
-    setIsSignup(!isSignup);
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+    setIsSignup((prevSignup) => !prevSignup);
     setShowPassword(false);
   };
 
@@ -71,9 +78,8 @@ const Auth = () => {
       console.log(error);
     }
   };
-  const GoogleFailure = (error) => {
+  const GoogleError = () =>
     console.log("google sign in Was unsuccessfull, Try again later");
-  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -81,7 +87,9 @@ const Auth = () => {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography variant="h5">{isSignup ? "Sign up" : "Sign in"}</Typography>
+        <Typography component="h1" variant="h5">
+          {isSignup ? "Sign up" : "Sign in"}
+        </Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             {isSignup && (
@@ -149,7 +157,7 @@ const Auth = () => {
               </Button>
             )}
             onSuccess={GoogleSuccess}
-            onFailure={GoogleFailure}
+            // onFailure={GoogleFailure}
             cookiePolicy="single_host_origin"
             ux_mode={"popup"}
           />

@@ -17,13 +17,19 @@ import {
   deletePostAction,
   likePostAction,
 } from "../../../Redux/Actions/Actions";
+import { useHistory } from "react-router-dom";
 
 const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const user = JSON.parse(localStorage.getItem("profile"));
 
   const classes = useStyles();
+
+  const handleDeleteButton = (id) => {
+    dispatch(deletePostAction(id));
+    history.push("/");
+  };
 
   const Likes = () => {
     if (post.likes.length > 0) {
@@ -54,7 +60,7 @@ const Post = ({ post, setCurrentId }) => {
   };
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} raised elevation={6}>
       <CardMedia
         className={classes.media}
         image={post.selectedFile}
@@ -69,13 +75,16 @@ const Post = ({ post, setCurrentId }) => {
 
       {(user?.result?.googleId === post?.creator ||
         user?.result?._id === post?.creator) && (
-        <div className={classes.overlay2}>
+        <div className={classes.overlay2} name="edit">
           <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              setCurrentId(post._id);
+            }}
             style={{ color: "white" }}
             size="small"
-            onClick={() => setCurrentId(post._id)}
           >
-            <MoreHorizIcon fontSize="small" />
+            <MoreHorizIcon fontSize="default" />
           </Button>
         </div>
       )}
@@ -110,7 +119,7 @@ const Post = ({ post, setCurrentId }) => {
 
         {(user?.result?.googleId === post?.creator ||
           user?.result?._id === post?.creator) && (
-          <Button onClick={() => dispatch(deletePostAction(post._id))}>
+          <Button onClick={() => handleDeleteButton(post._id)}>
             <DeleteIcon fontSize="small" />
             Delete
           </Button>

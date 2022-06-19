@@ -7,12 +7,15 @@ import {
   createPostAction,
   updatePostAction,
 } from "../../Redux/Actions/Actions";
+import { useHistory } from "react-router-dom";
 
 const Form = ({ currentId, setCurrentId }) => {
   const dispatch = useDispatch();
-  const postData = useSelector((state) =>
-    currentId ? state.postReducer.find((p) => p._id === currentId) : null
+  const history = useHistory();
+  const posts = useSelector((state) =>
+    currentId ? state.postReducer.posts.find((p) => p._id === currentId) : null
   );
+
   const [postLists, setPostLists] = useState({
     title: "",
     message: "",
@@ -21,8 +24,8 @@ const Form = ({ currentId, setCurrentId }) => {
   });
 
   useEffect(() => {
-    if (postData) setPostLists(postData);
-  }, [postData]);
+    if (posts) setPostLists(posts);
+  }, [posts]);
 
   const user = JSON.parse(localStorage.getItem("profile"));
 
@@ -38,6 +41,7 @@ const Form = ({ currentId, setCurrentId }) => {
       dispatch(createPostAction({ ...postLists, name: user?.result?.name }));
     }
     clear();
+    history.push("/");
   };
   const clear = () => {
     setCurrentId(null);
@@ -51,7 +55,7 @@ const Form = ({ currentId, setCurrentId }) => {
 
   if (!user?.result?.name) {
     return (
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} elevation={6}>
         <Typography variant="h6" align="center">
           Please Sign in to create your own memories and like other's memories
         </Typography>

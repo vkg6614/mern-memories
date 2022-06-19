@@ -13,7 +13,10 @@ import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
 import { useDispatch } from "react-redux";
 // import useStyles from "../../styles";
-import { getPostsAction } from "../../Redux/Actions/Actions";
+import {
+  getPostsAction,
+  getPostsBySearchAction,
+} from "../../Redux/Actions/Actions";
 import Paginate from "../Pagination.jsx";
 import { useHistory, useLocation } from "react-router-dom";
 import ChipInput from "material-ui-chip-input";
@@ -24,7 +27,7 @@ function useQuery() {
 }
 
 const Home = () => {
-  const [currentId, setCurrentId] = useState(null);
+  const [currentId, setCurrentId] = useState(0);
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
 
@@ -34,10 +37,6 @@ const Home = () => {
   const history = useHistory();
   const page = query.get("page") || 1;
   const searchQuery = query.get("searchQuery");
-
-  useEffect(() => {
-    dispatch(getPostsAction());
-  }, [currentId, dispatch]);
 
   const handleKeyPress = (e) => {
     if (e.keyCode === 13) {
@@ -54,8 +53,11 @@ const Home = () => {
     setTags(tags.filter((tag) => tag !== tagToDelete));
 
   const searchPost = () => {
-    if (search.trim()) {
-      //dispatch fetch search post
+    if (search.trim() || tags) {
+      dispatch(getPostsBySearchAction({ search, tags: tags.join(",") }));
+      history.push(
+        `/posts/search?searchQuery=${search || "none"}&&tags=${tags.join(",")}`
+      );
     } else {
       history.push("/");
     }
@@ -67,7 +69,7 @@ const Home = () => {
         <Grid
           className={classes.gridContainer}
           container
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="stretch"
           spacing={3}
         >
@@ -108,9 +110,11 @@ const Home = () => {
             </AppBar>
 
             <Form currentId={currentId} setCurrentId={setCurrentId} />
-            <Paper className={classes.pagination} elevation={6}>
-              <Paginate />
-            </Paper>
+            {!searchQuery && !tags.length && (
+              <Paper className={classes.pagination} elevation={6}>
+                <Paginate page={page} />
+              </Paper>
+            )}
           </Grid>
         </Grid>
       </Container>

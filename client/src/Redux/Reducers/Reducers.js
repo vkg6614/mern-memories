@@ -1,6 +1,7 @@
 import {
   CREATE,
   DELETE,
+  FETCH_BY_SEARCH,
   GET_POST_FAIL,
   GET_POST_LOADING,
   GET_POST_SUCCESS,
@@ -8,27 +9,53 @@ import {
   UPDATE,
 } from "../ActionTypes/ActionTypes";
 
-const postReducer = (postData = [], action) => {
+const postReducer = (state = { posts: [] }, action) => {
   switch (action.type) {
     case GET_POST_LOADING:
-      return postData;
+      return { ...state, isLoading: true };
     case GET_POST_SUCCESS:
-      return action.payload;
+      return {
+        ...state,
+        posts: action.payload.data,
+        currentPage: action.payload.currentPage,
+        numberOfPages: action.payload.numberOfPages,
+        isLoading: false,
+      };
     case GET_POST_FAIL:
-      return action.payload;
-    case CREATE:
-      return [...postData, action.payload];
-    case UPDATE:
+      return { ...state, isLoading: false };
+    case FETCH_BY_SEARCH:
+      return { ...state, posts: action.payload, isLoading: false };
+
     case LIKE:
-      return postData.map((post) =>
-        post._id === action.payload._id ? action.payload : post
-      );
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
+
+    case CREATE:
+      return {
+        ...state,
+        posts: [...state.posts, action.payload],
+        isLoading: false,
+      };
+    case UPDATE:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
 
     case DELETE:
-      return postData.filter((post) => post._id !== action.payload);
+      return {
+        ...state,
+        posts: state.posts.filter((post) => post._id !== action.payload),
+      };
 
     default:
-      return postData;
+      return state;
   }
 };
 

@@ -3,6 +3,7 @@ export const GET_POST_LOADING = "GET_POST_LOADING";
 export const GET_POST_FAIL = "GET_POST_FAIL";
 
 export const UPDATE = "UPDATE";
+export const FETCH_BY_SEARCH = "FETCH_BY_SEARCH";
 export const DELETE = "DELETE";
 export const LIKE = "LIKE";
 export const CREATE = "CREATE";
