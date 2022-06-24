@@ -2,6 +2,7 @@ import { Button, TextField, Typography } from "@material-ui/core";
 import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { commentPostAction } from "../../Redux/Actions/Actions";
+// import { useHistory } from "react-router-dom";
 
 import useStyles from "./styles";
 
@@ -15,17 +16,13 @@ const CommentSection = ({ post }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
   const handleCommentButton = async () => {
-    const finalComment = `${user.result.name}:${comment}`;
-    const newComments = await dispatch(
-      commentPostAction(finalComment, post._id)
-    );
-    // setComments(newComments);
-    console.log(newComments, "new");
-    // setComment("");
+    const finalComment = `${user.result.name}: ${comment}`;
+    let newComments = await dispatch(commentPostAction(finalComment, post._id));
+    setComments(newComments);
+    setComment("");
 
     commentRef.current.scrollIntoView({ behavior: "smooth" });
   };
-  console.log(comments, "com");
 
   return (
     <div>

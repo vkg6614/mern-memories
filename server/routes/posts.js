@@ -19,10 +19,14 @@ router.get("/search", getPostsBySearch);
 router.get("/", getPosts);
 router.get("/:id", getPost);
 
+// http://localhost:5000/posts/${id}/commentPost frontend
+
+// /posts/:id/commentPost  backend
+
 router.post("/", auth, createPost);
 router.patch("/:id", auth, updatePost);
 router.delete("/:id", auth, deletePost);
 router.patch("/:id/likePost", auth, likePost);
-router.post("/:id/commentPost", auth, commentPost);
+router.patch("/:id/commentPost", auth, commentPost);
 
 module.exports = router;

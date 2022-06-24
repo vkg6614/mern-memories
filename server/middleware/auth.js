@@ -17,7 +17,9 @@ const auth = async (req, res, next) => {
     }
 
     next();
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = { auth };

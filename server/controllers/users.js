@@ -26,7 +26,6 @@ const signin = async (req, res) => {
       "test",
       { expiresIn: "1h" }
     );
-    console.log("agya");
     res.status(200).json({ result: existingUser, token });
   } catch (error) {
     res.status(500).json({ message: error });
@@ -39,6 +38,7 @@ const signup = async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({ message: "user already registered" });
+
     if (password !== confirmPassword)
       return res.status(400).json({ message: "password doesn't match" });
 
@@ -48,10 +48,11 @@ const signup = async (req, res) => {
       password: hashPassword,
       name: `${firstName} ${lastName}`,
     });
+
     const token = jwt.sign({ email: result.email, id: result._id }, "test", {
       expiresIn: "1hr",
     });
-    res.status(201).json({ result, token });
+    res.status(200).json({ result, token });
   } catch (error) {
     res.status(500).json({ message: error });
   }

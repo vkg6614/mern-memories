@@ -53,6 +53,7 @@ const Auth = () => {
       dispatch(signinAction(formData, history));
     }
   };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -71,6 +72,7 @@ const Auth = () => {
   const GoogleSuccess = async (res) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
+    console.log(res);
     try {
       dispatch({ type: "AUTH", data: { result, token } });
       history.push("/");
@@ -78,6 +80,7 @@ const Auth = () => {
       console.log(error);
     }
   };
+
   const GoogleFailure = () =>
     console.log("google sign in Was unsuccessfull, Try again later");
 

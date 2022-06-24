@@ -26,7 +26,9 @@ const getPostsAction = (page) => async (dispatch) => {
 const getPostAction = (id) => async (dispatch) => {
   try {
     dispatch({ type: GET_POST_LOADING });
+
     const { data } = await api.fetchPost(id);
+
     dispatch({ type: GET_SINGLE_POST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: GET_POST_FAIL, payload: error.message });
@@ -79,6 +81,7 @@ const deletePostAction = (id) => async (dispatch) => {
 const likePostAction = (id) => async (dispatch) => {
   try {
     const { data } = await api.likePost(id);
+    console.log(data);
     dispatch({ type: LIKE, payload: data });
   } catch (error) {
     console.log(error);
@@ -87,8 +90,7 @@ const likePostAction = (id) => async (dispatch) => {
 
 const commentPostAction = (value, id) => async (dispatch) => {
   try {
-    const { data } = await api.commentPost(value, id);
-    console.log(data, "action");
+    let { data } = await api.commentPost(value, id);
     dispatch({ type: COMMENT, payload: data });
     return data.comments;
   } catch (error) {

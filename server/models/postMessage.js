@@ -18,5 +18,5 @@ const postSchema = new mongoose.Schema({
   },
 });
 
-const PostMessage = mongoose.model("postMessage", postSchema);
+var PostMessage = mongoose.model("postMessage", postSchema);
 module.exports = { PostMessage };

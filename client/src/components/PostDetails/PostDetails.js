@@ -9,14 +9,13 @@ import useStyles from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import moment from "moment";
-import {
-  getPostAction,
-  getPostsBySearchAction,
-} from "../../Redux/Actions/Actions";
+import { getPostAction, getPostsAction } from "../../Redux/Actions/Actions";
 import CommentSection from "./CommentSection";
 
 const PostDetails = () => {
   const { posts, post, isLoading } = useSelector((state) => state.postReducer);
+  console.log(posts, "posts");
+  console.log(post, "post");
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -25,15 +24,8 @@ const PostDetails = () => {
 
   useEffect(() => {
     dispatch(getPostAction(id));
-  }, [id, dispatch]);
-
-  useEffect(() => {
-    if (post) {
-      dispatch(
-        getPostsBySearchAction({ search: "none", tags: post?.tags.join(",") })
-      );
-    }
-  }, [post, dispatch]);
+    dispatch(getPostsAction());
+  }, [id]);
 
   if (!post) return null;
   if (isLoading) {

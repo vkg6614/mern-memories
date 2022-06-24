@@ -10,7 +10,6 @@ const Paginate = ({ page }) => {
   const classes = useStyles();
 
   const { numberOfPages } = useSelector((state) => state.postReducer);
-  console.log(numberOfPages, "num");
 
   useEffect(() => {
     if (page) {

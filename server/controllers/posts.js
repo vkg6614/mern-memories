@@ -49,12 +49,15 @@ const getPostsBySearch = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
+  const postMessage = new PostMessage({
+    ...req.body,
+    creator: req.userId,
+    createdAt: new Date().toISOString(),
+  });
+
   try {
-    const postMessage = await PostMessage.create({
-      ...req.body,
-      creator: req.userId,
-      createdAt: new Date().toISOString(),
-    });
+    await postMessage.save();
+
     res.status(201).json(postMessage);
   } catch (error) {
     res.status(409).json({ message: error.message });
@@ -84,7 +87,8 @@ const deletePost = async (req, res) => {
 };
 
 const likePost = async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
+
   if (!req.userId) return res.json({ message: "Unauthorized" });
 
   if (!id) return res.status(404).send("this id is not present");
@@ -111,13 +115,15 @@ const commentPost = async (req, res) => {
   const { id } = req.params;
   const { value } = req.body;
 
-  const post = await PostMessage.findById(id);
+  var post = await PostMessage.findById(id);
   post.comments.push(value);
   const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
     new: true,
   });
 
   res.json(updatedPost);
+
+  // res.status(409).json({ message: error.message });
 };
 
 module.exports = {

@@ -27,6 +27,8 @@ const postReducer = (state = { posts: [] }, action) => {
       return { ...state, isLoading: false };
 
     case GET_SINGLE_POST_SUCCESS:
+      // console.log(state.posts, "redu", "single action");
+
       return { ...state, post: action.payload, isLoading: false };
 
     case FETCH_BY_SEARCH:
@@ -44,7 +46,9 @@ const postReducer = (state = { posts: [] }, action) => {
       return {
         ...state,
         posts: state.posts.map((post) => {
-          if (post._id === action.payload._id) return action.payload;
+          if (post._id === action.payload._id) {
+            return action.payload;
+          }
           return post;
         }),
       };
